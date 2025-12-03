@@ -1,0 +1,42 @@
+## Ignore build output
+bin/
+obj/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio
+.vs/
+
+## ASP.NET Core
+wwwroot/dist/
+wwwroot/.vs/
+
+## Logs
+*.log
+logs/
+
+## Node modules (if using npm or vite)
+node_modules/
+
+## Dotnet secrets
+appsettings.json
+appsettings.Development.json
+
+## Publish output
+publish/
+*.pubxml
+*.pubxml.user
+
+## Backup / temp files
+*.tmp
+*.bak
+*.old
+*.cache
+
+## JetBrains Rider
+.idea/
+*.sln.iml
