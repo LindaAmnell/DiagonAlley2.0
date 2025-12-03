@@ -1,0 +1,88 @@
+﻿.welcome {
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+    .welcome h1 {
+        color: #d4af37;
+        font-size: 4.5rem;
+        font-family: 'IM Fell English SC', serif;
+        letter-spacing: 3px;
+        font-weight: 700;
+        z-index: 5;
+        text-shadow: 0 0 15px rgba(212,175,55,0.8), 0 0 30px rgba(212,175,55,0.5), 0 0 45px rgba(212,175,55,0.3);
+    }
+
+.btns {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    z-index: 6;
+}
+
+    .btns button {
+        padding: 12px 28px;
+        font-size: 1.2rem;
+        font-family: 'IM Fell English SC', serif;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        color: black;
+        background: #d4af37;
+        font-weight: bold;
+        letter-spacing: 1px;
+        box-shadow: 0 0 12px rgba(212,175,55,0.8), inset 0 0 10px rgba(0,0,0,0.4);
+        transition: all 0.25s ease-in-out;
+        position: relative;
+        z-index: 10;
+    }
+
+        .btns button:hover {
+            background: #f5d87f;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 1), inset 0 0 12px rgba(0,0,0,0.5);
+            transform: scale(1.08);
+        }
+
+        .btns button:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(0,0,0,0.6);
+        }
+
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ffdf5d;
+    border-radius: 50%;
+    opacity: 0.8;
+    box-shadow: 0 0 15px #ffdf5d, 0 0 30px rgba(255,223,93,0.8);
+    animation: float 4s infinite ease-in-out;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translateY(-40px) scale(1.4);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+    }
+}
