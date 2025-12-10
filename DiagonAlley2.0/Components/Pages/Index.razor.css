@@ -1,6 +1,5 @@
 ﻿.welcome {
     height: 100vh;
-    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,34 +54,3 @@
             transform: scale(0.95);
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(0,0,0,0.6);
         }
-
-
-.particle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #ffdf5d;
-    border-radius: 50%;
-    opacity: 0.8;
-    box-shadow: 0 0 15px #ffdf5d, 0 0 30px rgba(255,223,93,0.8);
-    animation: float 4s infinite ease-in-out;
-    z-index: 3;
-    pointer-events: none;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.8;
-    }
-
-    50% {
-        transform: translateY(-40px) scale(1.4);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(0) scale(1);
-        opacity: 0.8;
-    }
-}

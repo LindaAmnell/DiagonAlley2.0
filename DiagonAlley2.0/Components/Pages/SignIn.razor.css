@@ -1,4 +1,4 @@
-﻿.signIn {
+﻿/*.signIn {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -63,10 +63,11 @@
     position: relative;
 }
 
-.login-btn {
+.btn {
     padding: 12px 24px;
     font-size: 1.2rem;
     border-radius: 8px;
+    width: 150px;
     border: none;
     cursor: pointer;
     font-family: 'IM Fell English SC', serif;
@@ -76,9 +77,10 @@
     transition: all 0.25s ease-in-out;
     z-index: 5;
     position: relative;
+    margin: 10px 0 10px 0;
 }
 
-    .login-btn:hover {
+    .btn:hover {
         background: #f5d87f;
         transform: scale(1.05);
         box-shadow: 0 0 20px rgba(255,215,0,1), inset 0 0 10px rgba(0,0,0,0.5);
@@ -113,3 +115,4 @@
         opacity: 0.85;
     }
 }
+*/

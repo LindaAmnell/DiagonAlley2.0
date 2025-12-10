@@ -1,21 +1,14 @@
 ﻿@page "/"
+@using DiagonAlley2._0.Components.Pages.Particles
 
-
+<div class="particles-container">
+    <ParticlesHome />
+</div>
+ 
 <div class="welcome">
     <h1>Welcome to Diagon Alley</h1>
 
-    <div class="particle" style="top:10%; left:30%; animation-delay:0s;"></div>
-    <div class="particle" style="top:20%; left:60%; animation-delay:1s;"></div>
-    <div class="particle" style="top:40%; left:25%; animation-delay:1.5s;"></div>
-    <div class="particle" style="top:55%; left:70%; animation-delay:0.5s;"></div>
-    <div class="particle" style="top:65%; left:40%; animation-delay:2s;"></div>
-    <div class="particle" style="top:75%; left:50%; animation-delay:2.5s;"></div>
-    <div class="particle" style="top:85%; left:30%; animation-delay:3s;"></div>
-    <div class="particle" style="top:15%; left:50%; animation-delay:1s;"></div>
-    <div class="particle" style="top:35%; left:60%; animation-delay:2.2s;"></div>
-    <div class="particle" style="top:80%; left:55%; animation-delay:0.8s;"></div>
 
-  
        <div class="btns">
             <button type="button" @onclick="GoToSignIn">Sign In</button>
             <button type="button" @onclick="GoToRegister">Register</button>
@@ -30,3 +23,15 @@
     void GoToSignIn() => Nav.NavigateTo("/signIn");
     void GoToRegister() => Nav.NavigateTo("/register");
 }
+
+
+    @* <div class="particle" style="top:10%; left:30%; animation-delay:0s;"></div>
+    <div class="particle" style="top:20%; left:60%; animation-delay:1s;"></div>
+    <div class="particle" style="top:40%; left:25%; animation-delay:1.5s;"></div>
+    <div class="particle" style="top:55%; left:70%; animation-delay:0.5s;"></div>
+    <div class="particle" style="top:65%; left:40%; animation-delay:2s;"></div>
+    <div class="particle" style="top:75%; left:50%; animation-delay:2.5s;"></div>
+    <div class="particle" style="top:85%; left:30%; animation-delay:3s;"></div>
+    <div class="particle" style="top:15%; left:50%; animation-delay:1s;"></div>
+    <div class="particle" style="top:35%; left:60%; animation-delay:2.2s;"></div>
+    <div class="particle" style="top:80%; left:55%; animation-delay:0.8s;"></div> *@

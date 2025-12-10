@@ -1,7 +1,97 @@
 ﻿@page "/register"
+@using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Models
+@using DiagonAlley2._0.Models.Enum
+@using DiagonAlley2._0.Services
+@using global::Services.Helper
 
-<h3>Register</h3>
+<div class="particles-container">
+     <ParticlesAuth />
+</div>
+
+<div class="signIn">
+<h1>Diagon Alley</h1>
+
+	<div class="input-section">
+		<div class="inputValue">
+		
+        <label class="labels">Username</label>
+        <input type="text"
+               class="input"
+               value="@UserName"
+               @oninput="e => UserName = e.Value?.ToString()" />
+		</div>
+		<div class="inputValue" >
+		 <label class="labels">Password</label>
+        <input type="password"
+               class="input"
+               value="@Password"
+               @oninput="e => Password = e.Value?.ToString()" />
+		</div>
+        <div class="inputValue">
+
+         <label class="labels">Select Wizard Level</label>
+        <select class="input" @bind="SelectedLevel">
+            @foreach (var level in Enum.GetValues<WizardLevel>())
+            {
+                <option value="@level">@level</option>
+            }
+        </select>
+
+        </div>
+        @if (!string.IsNullOrEmpty(Message))
+        {
+            <p style="color: gold; margin-top: 10px; margin-left: 20px;">@Message</p>
+        }
+	</div>
+               <button class=btn @onclick="HandeleRegister" >Register</button>
+	           <button class=btn @onclick="HandeleBack" >Back</button>
+    </div>
 
 @code {
+    @inject NavigationManager Nav
+    @inject MongoDbService Db
 
+    private string UserName { get; set; } = "";
+    private string Password { get; set; } = "";
+    private WizardLevel SelectedLevel { get; set; } = WizardLevel.Regular;
+
+    private string? Message { get; set; }
+
+    private async Task HandeleRegister()
+    {
+     var validationMessage = UserValidationHelper.ValidateCredentials(UserName, Password);
+
+        if (validationMessage is not null)
+        {
+            Message = validationMessage;
+            return;
+        }
+
+        var existing = await Db.GetAllAsync<Wizard>("Wizards");
+        if (existing.Any(w => w.Name == UserName))
+        {
+            Message = "A wizard with this username already exists.";
+            return;
+        }
+
+        var wizard = new Wizard
+        {
+            Name = UserName,
+            Password = Password,
+            Level = SelectedLevel,
+            Cart = new()
+        };
+
+        WizardHelper.ApplyDiscount(wizard);
+
+        await Db.CreateAsync("Wizards", wizard);
+
+        Message = "Wizard created! Redirecting...";
+        await Task.Delay(1000);
+
+        Nav.NavigateTo("/signIn");
+    }
+
+    private void HandeleBack() => Nav.NavigateTo("/");
 }

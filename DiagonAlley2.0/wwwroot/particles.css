@@ -1,0 +1,35 @@
+﻿.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ffdf5d;
+    border-radius: 50%;
+    opacity: 0.8;
+    box-shadow: 0 0 15px #ffdf5d, 0 0 30px rgba(255,223,93,0.8);
+    animation: float 4s infinite ease-in-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translateY(-35px) scale(1.3);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.85;
+    }
+}
+.particles-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}

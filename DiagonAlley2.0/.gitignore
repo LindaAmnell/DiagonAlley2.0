@@ -23,7 +23,6 @@ logs/
 node_modules/
 
 ## Dotnet secrets
-appsettings.json
 appsettings.Development.json
 
 ## Publish output

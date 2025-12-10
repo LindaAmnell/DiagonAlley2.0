@@ -9,12 +9,14 @@ namespace DiagonAlley2._0.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
-        public string Name { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+
         public decimal Price { get; set; }
+
         public int Amount { get; set; }
 
         [BsonRepresentation(BsonType.String)]
         public ProductType Type { get; set; }
-
     }
 }
