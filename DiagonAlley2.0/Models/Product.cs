@@ -14,9 +14,21 @@ namespace DiagonAlley2._0.Models
 
         public decimal Price { get; set; }
 
-        public int Amount { get; set; }
-
         [BsonRepresentation(BsonType.String)]
         public ProductType Type { get; set; }
+        public string? ImageUrl { get; set; }
+
+        // Wand
+        public string? Core { get; set; }
+        public int? Length { get; set; }
+
+        // Potion
+        public string? Effect { get; set; }
+        public int? Duration { get; set; }
+
+        // Broomstick
+        public int? Speed { get; set; }
+        public string? Manufacturer { get; set; }
+
     }
 }

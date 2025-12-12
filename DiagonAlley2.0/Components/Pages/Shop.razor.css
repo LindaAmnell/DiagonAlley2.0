@@ -1,0 +1,23 @@
+﻿
+.shop-container {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding-top: 50px;
+    display: grid;
+    place-items: center;
+    padding-bottom: 30px
+}
+
+.shop-content {
+    display: grid;
+    margin-top: 40px;
+    z-index: 5;
+    place-items: center;
+}
+
+.shop-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}

@@ -1,0 +1,86 @@
+﻿@page "/shop"
+@using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Models
+@using DiagonAlley2._0.Services
+@using DiagonAlley2._0.Services.Helper
+@using global::Models.Enum
+@inject MongoDbService Db
+@inject NavigationManager Nav
+
+<div class="particles-container">
+    <ParticlesShop />
+</div>
+<div class="shop-container" >
+
+		<h1 class="magic-title">Diagon Alley Shop</h1>
+
+        <div class="shop-btn" >
+        <button class="btn" @onclick="HandeleLogout" >Sign out</button>
+        <button class="btn" >Cart</button>
+
+        </div> 
+
+    <div class="shop-content">
+        @if (Products.Count == 0)
+        {
+            <p style="color: gold;">Loading products...</p>
+        }
+        else
+        {
+            <div class="product-grid">
+                @foreach (var product in Products)
+                {
+                    <div class="product-card">
+                        <img src="@ProductImageHelper.GetImage(product.Type)"
+                             alt="@product.Name"
+                             class="product-image" />
+
+                        <h3>@product.Name</h3>
+
+                        <p class="price">
+                            💰 @product.Price galleons
+                        </p>
+
+                        @if (product.Type == ProductType.Wand)
+                        {
+                            <p>🪄 Core: @product.Core</p>
+                            <p>📏 Length: @product.Length inches</p>
+                        }
+                        else if (product.Type == ProductType.Potion)
+                        {
+                            <p>🧪 Effect: @product.Effect</p>
+                            <p>⏳ Duration: @product.Duration min</p>
+                        }
+                        else if (product.Type == ProductType.Broomstick)
+                        {
+                            <p>🧹 Speed: @product.Speed</p>
+                            <p>🏭 Maker: @product.Manufacturer</p>
+                        }
+
+                        <button class="btn">
+                            Add to cart
+                        </button>
+
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+
+</div>
+
+
+@code {
+
+
+    private List<Product> Products = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await Db.GetAllAsync<Product>("Products");
+    }
+
+
+    void HandeleLogout() =>  Nav.NavigateTo("/");
+}

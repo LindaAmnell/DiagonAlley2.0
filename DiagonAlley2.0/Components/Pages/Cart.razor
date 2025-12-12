@@ -1,0 +1,57 @@
+﻿@page "/cart"
+@inject MongoDbService Db
+@inject LoginService LoginService
+
+@using DiagonAlley2._0.Models
+@using DiagonAlley2._0.Services
+@using Services.Helper
+@using global::Services.Helper
+
+<h1 class="magic-title">Your Cart</h1>
+
+@if (Wizard == null)
+{
+    <p style="color: gold;">You must be logged in.</p>
+}
+else if (Wizard.Cart.Count == 0)
+{
+    <p style="color: gold;">Your cart is empty.</p>
+}
+else
+{
+    <div class="cart-list">
+        @foreach (var item in Wizard.Cart)
+        {
+            <div class="cart-item">
+                <p><strong>@item.Product?.Name</strong></p>
+                <p>Quantity: @item.Quantity</p>
+                <p>Price: @item.Product?.Price galleons</p>
+                <p>Total: @item.TotalPrice galleons</p>
+            </div>
+        }
+
+        <hr />
+
+        <p style="color: gold; font-size: 1.4rem;">
+            Grand total: @GrandTotal galleons
+        </p>
+    </div>
+}
+
+
+@code {
+    private Wizard? Wizard;
+    private decimal GrandTotal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Wizard = LoginService.CurrentWizard;
+
+        if (Wizard != null)
+        {
+            await WizardHelper.LoadCartDataAsync(Wizard, Db);
+            GrandTotal = Wizard.Cart.Sum(i => i.TotalPrice);
+        }
+    }
+}
+

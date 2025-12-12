@@ -1,5 +1,11 @@
 ﻿@page "/signIn"
 @using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Services
+@using DiagonAlley2._0.Models
+@inject NavigationManager Nav
+@inject MongoDbService Db
+@inject LoginService LoginService
+
 
 <div class="particles-container">
    <ParticlesAuth />
@@ -27,30 +33,43 @@
                @oninput="e => Password = e.Value?.ToString()" />
 		</div>
 	</div>
+        @if (!string.IsNullOrEmpty(Message))
+{
+    <p style="color: gold; margin-top: 10px;">@Message</p>
+}
 
 	<button class=btn @onclick="HandeleLogin" >Sign In</button>
 	<button class=btn @onclick="HandeleBack" >Back</button>
 
 </div>
-@inject NavigationManager Nav
 @code {
 
 	private string UserName { get; set; } = "";
 	private string Password { get; set; } = "";
+    private string? Message;
 
-	private void HandeleLogin()
-	{
 
-	}
+	private async Task HandeleLogin()
+{
+    Message = UserValidationHelper.ValidateCredentials(UserName, Password);
+    if (Message != null)
+        return;
+
+    var wizards = await Db.GetAllAsync<Wizard>("Wizards");
+
+    var wizard = wizards.FirstOrDefault(w =>
+        w.Name == UserName && w.Password == Password);
+
+    if (wizard == null)
+    {
+        Message = "Invalid username or password.";
+        return;
+    }
+
+    LoginService.Login(wizard);
+    Nav.NavigateTo("/shop");
+}
 	void HandeleBack() =>  Nav.NavigateTo("/");
 	
 
 }
-
-			 @*   <div class="particle" style="top:10%; left:20%; animation-delay:0s;"></div>
-    <div class="particle" style="top:25%; left:70%; animation-delay:1s;"></div>
-    <div class="particle" style="top:55%; left:30%; animation-delay:1.5s;"></div>
-    <div class="particle" style="top:75%; left:60%; animation-delay:0.5s;"></div>
-    <div class="particle" style="top:80%; left:40%; animation-delay:2s;"></div>
-    <div class="particle" style="top:45%; left:80%; animation-delay:2.5s;"></div>
-    <div class="particle" style="top:15%; left:50%; animation-delay:1.2s;"></div> *@
