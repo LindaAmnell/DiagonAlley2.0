@@ -1,5 +1,6 @@
 ﻿@page "/shop"
 @using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Components.Shop
 @using DiagonAlley2._0.Models
 @using DiagonAlley2._0.Services
 @using DiagonAlley2._0.Services.Helper
@@ -20,7 +21,7 @@
        
         @if(LoginService.IsAdmin == true)
         {
-            <button class="btn">Add product</button>
+            <button class="btn" @onclick="handleCreate" >Add product</button>
         } 
         else
         {
@@ -35,73 +36,63 @@
         }
         else
         {
-            <div class="product-grid">
-                @foreach (var product in Products)
-                {
-                    <div class="product-card">
-                        <img src="@ProductImageHelper.GetImage(product.Type)"
-                             alt="@product.Name"
-                             class="product-image" />
-                        <h3>@product.Name</h3>
-
-                        <p class="price">
-                            💰 @product.Price galleons
-                        </p>
-
-                        @if (product.Type == ProductType.Wand)
-                        {
-                            <p>🪄 Core: @product.Core</p>
-                            <p>📏 Length: @product.Length inches</p>
-                        }
-                        else if (product.Type == ProductType.Potion)
-                        {
-                            <p>🧪 Effect: @product.Effect</p>
-                            <p>⏳ Duration: @product.Duration min</p>
-                        }
-                        else if (product.Type == ProductType.Broomstick)
-                        {
-                            <p>🧹 Speed: @product.Speed</p>
-                            <p>🏭 Maker: @product.Manufacturer</p>
-                        }
-                        <div class="product-btn">
-                        @if(LoginService.IsAdmin == true)
-                        {
-                            <button class="admin-btn">🗑️</button>
-                            <button class="admin-btn">✏️</button>
-                        }
-                        else
-                        {
-                        <button class="btn" @onclick="() => HandleAddToCart(product)">
-                            Add to cart
-                        </button>                         
-                        }
-                        </div>
-                    </div>
-                }
-            </div>
+           <div class="product-grid">
+            @foreach (var product in Products)
+            {
+                <ProductCard
+                    Product="product"
+                    IsAdmin="LoginService.IsAdmin"
+                    OnAddToCart="HandleAddToCart" />
+            }
+        </div>
         }
     </div>
-
+    @if (CreatProduct)
+    {   
+        <div class="creat-div">
+             <CreatProduct
+                  OnClose="CloseCreate"
+                    OnProductCreated="ReloadProducts"
+                    />
+        </div>
+    }
 </div>
 
 
 @code {
     private List<Product> Products = new();
+    private bool CreatProduct = false;
 
     protected override async Task OnInitializedAsync()
     {
         Products = await Db.GetAllAsync<Product>("Products");
-     
+
     }
     private async Task HandleAddToCart(Product product)
-{
-    var wizard = LoginService.CurrentWizard;
+    {
+        var wizard = LoginService.CurrentWizard;
 
-    await WizardHelper.AddToCart(wizard, product, Db);
+        await WizardHelper.AddToCart(wizard, product, Db);
 
-    Console.WriteLine($"{product.Name} added to cart");
-}
+        Console.WriteLine($"{product.Name} added to cart");
+    }
 
     void HandeleLogout() =>  Nav.NavigateTo("/");
     void HandeleGoToCart() =>  Nav.NavigateTo("/cart");
+    void handleCreate()
+    {
+        CreatProduct = true;
+    }
+    void CloseCreate()
+{
+    CreatProduct = false;
+}
+
+async Task ReloadProducts()
+{
+    Products = await Db.GetAllAsync<Product>("Products");
+    StateHasChanged();
+}
+
+
 }

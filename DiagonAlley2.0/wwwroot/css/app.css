@@ -78,7 +78,7 @@ select{
     padding: 12px 24px;
     font-size: 1.2rem;
     border-radius: 8px;
-    width: 150px;
+    width: 160px;
     border: none;
     cursor: pointer;
     font-family: 'IM Fell English SC', serif;
@@ -130,3 +130,70 @@ select.input {
         background-color: #333;
         color: gold !important;
     }
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+    .form-section h3 {
+        margin-bottom: 12px;
+        color: #d4af37;
+        font-size: 1.1rem;
+    }
+
+.admin-form {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 40px 40px;
+    width: 500px;
+    box-shadow: 0 0 20px rgba(212,175,55,0.35);
+    font-family: 'IM Fell English SC', serif;
+    color: gold;
+    place-items: center;
+}
+
+.magic-subtitle {
+    text-align: center;
+    color: #d4af37;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.labels {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: #f5d87f;
+}
+
+.input {
+    background: #111;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: gold;
+    font-size: 1rem;
+    outline: none;
+}
+
+    .input:focus {
+        border-color: #d4af37;
+        box-shadow: 0 0 8px rgba(212,175,55,0.5);
+    }
+
+.divider {
+    height: 1px;
+    background: rgba(212,175,55,0.3);
+    margin: 25px 0;
+}
+
+
+.admin-submit {
+    margin: 10px;
+    font-size: 1.1rem;
+}
+

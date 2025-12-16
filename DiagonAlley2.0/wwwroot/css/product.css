@@ -36,4 +36,14 @@
 .product-btn {
     margin-top: auto;
     padding-top: 20px;
+  
+}
+
+.creat-div{
+    position: absolute;
+    top: 12%;
+    left: 37%;
+    z-index: 10;
+    
+
 }

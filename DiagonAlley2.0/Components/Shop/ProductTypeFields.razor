@@ -1,0 +1,95 @@
+﻿@using global::Models.Enum
+
+@if (Type == ProductType.Wand)
+{
+    <div class="form-section">
+        <h3>🪄 Wand Details</h3>
+
+        <div class="form-group">
+            <label class="labels">Core</label>
+            <input type="text"
+                   class="input"
+                   value="@Core"
+                   @oninput="e => OnCoreChanged.InvokeAsync(e.Value?.ToString())" />
+        </div>
+
+        <div class="form-group">
+            <label class="labels">Length (inches)</label>
+            <input type="text"
+                   class="input"
+                   value="@Length"
+                   @oninput="e => OnLengthChanged.InvokeAsync(
+                        int.TryParse(e.Value?.ToString(), out var l) ? l : Length)" />
+        </div>
+    </div>
+}
+
+@if (Type == ProductType.Potion)
+{
+    <div class="form-section">
+        <h3>🧪 Potion Details</h3>
+
+        <div class="form-group">
+            <label class="labels">Effect</label>
+            <input type="text"
+                   class="input"
+                   value="@Effect"
+                   @oninput="e => OnEffectChanged.InvokeAsync(e.Value?.ToString())" />
+        </div>
+
+        <div class="form-group">
+            <label class="labels">Duration (min)</label>
+            <input type="text"
+                   class="input"
+                   value="@Duration"
+                   @oninput="e => OnDurationChanged.InvokeAsync(
+                        int.TryParse(e.Value?.ToString(), out var d) ? d : Duration)" />
+        </div>
+    </div>
+}
+
+@if (Type == ProductType.Broomstick)
+{
+    <div class="form-section">
+        <h3>🧹 Broomstick Details</h3>
+
+        <div class="form-group">
+            <label class="labels">Speed</label>
+            <input type="text"
+                   class="input"
+                   value="@Speed"
+                   @oninput="e => OnSpeedChanged.InvokeAsync(
+                        int.TryParse(e.Value?.ToString(), out var s) ? s : Speed)" />
+        </div>
+
+        <div class="form-group">
+            <label class="labels">Manufacturer</label>
+            <input type="text"
+                   class="input"
+                   value="@Manufacturer"
+                   @oninput="e => OnManufacturerChanged.InvokeAsync(e.Value?.ToString())" />
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public ProductType Type { get; set; }
+
+    // Wand
+    [Parameter] public string? Core { get; set; }
+    [Parameter] public int Length { get; set; }
+    [Parameter] public EventCallback<string?> OnCoreChanged { get; set; }
+    [Parameter] public EventCallback<int> OnLengthChanged { get; set; }
+
+    // Potion
+    [Parameter] public string? Effect { get; set; }
+    [Parameter] public int Duration { get; set; }
+    [Parameter] public EventCallback<string?> OnEffectChanged { get; set; }
+    [Parameter] public EventCallback<int> OnDurationChanged { get; set; }
+
+    // Broom
+    [Parameter] public int Speed { get; set; }
+    [Parameter] public string? Manufacturer { get; set; }
+    [Parameter] public EventCallback<int> OnSpeedChanged { get; set; }
+    [Parameter] public EventCallback<string?> OnManufacturerChanged { get; set; }
+}

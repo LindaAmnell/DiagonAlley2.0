@@ -1,0 +1,65 @@
+﻿@using DiagonAlley2._0.Models
+@using global::Models.Enum
+@using DiagonAlley2._0.Services.Helper
+
+<div class="product-card">
+
+    <img src="@ProductImageHelper.GetImage(Product.Type)"
+         alt="@Product.Name"
+         class="product-image" />
+
+    <h3>@Product.Name</h3>
+
+    <p class="price">
+        💰 @Product.Price galleons
+    </p>
+
+    @if (Product.Type == ProductType.Wand)
+    {
+        <p>🪄 Core: @Product.Core</p>
+        <p>📏 Length: @Product.Length inches</p>
+    }
+    else if (Product.Type == ProductType.Potion)
+    {
+        <p>🧪 Effect: @Product.Effect</p>
+        <p>⏳ Duration: @Product.Duration min</p>
+    }
+    else if (Product.Type == ProductType.Broomstick)
+    {
+        <p>🧹 Speed: @Product.Speed</p>
+        <p>🏭 Maker: @Product.Manufacturer</p>
+    }
+
+    <div class="product-btn">
+        @if (IsAdmin)
+        {
+            <button class="admin-btn">🗑️</button>
+            <button class="admin-btn">✏️</button>
+        }
+        else
+        {
+            <button class="btn" @onclick="AddToCart">
+                Add to cart
+            </button>
+        }
+    </div>
+
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Product Product { get; set; } = default!;
+
+    [Parameter]
+    public bool IsAdmin { get; set; }
+
+    [Parameter]
+    public EventCallback<Product> OnAddToCart { get; set; }
+
+    async Task AddToCart()
+    {
+        await OnAddToCart.InvokeAsync(Product);
+    }
+
+    
+}
