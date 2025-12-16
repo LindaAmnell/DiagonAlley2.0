@@ -29,6 +29,8 @@ namespace DiagonAlley2._0
                 app.UseHsts();
             }
 
+
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

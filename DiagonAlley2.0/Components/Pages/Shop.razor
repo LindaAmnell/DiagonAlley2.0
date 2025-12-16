@@ -50,10 +50,11 @@
     @if (CreatProduct)
     {   
         <div class="creat-div">
-             <CreatProduct
-                  OnClose="CloseCreate"
-                    OnProductCreated="ReloadProducts"
-                    />
+             
+                    <ProductForm 
+                         OnClose="CloseCreate" 
+                         OnProductCreated="ReloadProducts"
+                        />
         </div>
     }
 </div>
@@ -79,6 +80,7 @@
 
     void HandeleLogout() =>  Nav.NavigateTo("/");
     void HandeleGoToCart() =>  Nav.NavigateTo("/cart");
+
     void handleCreate()
     {
         CreatProduct = true;
