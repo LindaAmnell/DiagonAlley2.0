@@ -22,5 +22,28 @@ namespace Services.Helper
         {
             return wizard.Password == password;
         }
+
+        public static async Task AddToCart(Wizard wizard,
+            Product product,
+            MongoDbService db)
+        {
+            var item = wizard.Cart.FirstOrDefault(
+                c => c.ProductId == product.Id);
+
+            if (item == null)
+            {
+                wizard.Cart.Add(new CartItem
+                {
+                    ProductId = product.Id!,
+                    Quantity = 1
+                });
+            }
+            else
+            {
+                item.Quantity++;
+            }
+
+            await db.UpdateAsync("Wizards", wizard.Id!, wizard);
+        }
     }
 }

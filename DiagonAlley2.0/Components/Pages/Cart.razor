@@ -1,57 +1,97 @@
 ﻿@page "/cart"
-@inject MongoDbService Db
-@inject LoginService LoginService
 
-@using DiagonAlley2._0.Models
-@using DiagonAlley2._0.Services
-@using Services.Helper
-@using global::Services.Helper
+@using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Services.Helper
+@using global::Services
 
-<h1 class="magic-title">Your Cart</h1>
+@inject CartService CartSvc
+@inject NavigationManager Nav
 
-@if (Wizard == null)
-{
-    <p style="color: gold;">You must be logged in.</p>
-}
-else if (Wizard.Cart.Count == 0)
-{
-    <p style="color: gold;">Your cart is empty.</p>
-}
-else
-{
-    <div class="cart-list">
-        @foreach (var item in Wizard.Cart)
-        {
-            <div class="cart-item">
-                <p><strong>@item.Product?.Name</strong></p>
-                <p>Quantity: @item.Quantity</p>
-                <p>Price: @item.Product?.Price galleons</p>
-                <p>Total: @item.TotalPrice galleons</p>
-            </div>
-        }
+<div class="particles-container">
+    <ParticlesHome />
+</div>
 
-        <hr />
+<div class="cart-container">
+    <h1 class="magic-title">Your Cart</h1>
 
-        <p style="color: gold; font-size: 1.4rem;">
-            Grand total: @GrandTotal galleons
-        </p>
+    <div class="shop-btn">
+        <button class="btn" @onclick="GoBack">Back</button>
     </div>
-}
 
+    @if (CartSvc.Wizard == null)
+    {
+        <p class="cart-message">You must be logged in.</p>
+    }
+    else if (CartSvc.Wizard.Cart.Count == 0)
+    {
+        <p class="cart-message">Your cart is empty.</p>
+    }
+    else
+    {
+            <div class="cart-list">
+                    <div class="flex">
+                                <div class="cart-items">
+                                    @foreach (var item in CartSvc.Wizard.Cart)
+                                    {
+                                        @if (item.Product != null)
+                                        {<div class="cart-item">
+                        <img src="@ProductImageHelper.GetImage(item.Product.Type)"
+                             alt="@item.Product.Name"
+                             class="cart-image" />
+
+                        <div class="cart-info">
+                            <h3 class="cart-product-name">@item.Product.Name</h3>
+
+                            <div class="quantity-controls">
+                                <button class="cart-button"
+                                        @onclick="() => CartSvc.Decrease(item)">➖</button>
+
+                                <span class="quantity-label">@item.Quantity</span>
+
+                                <button class="cart-button"
+                                        @onclick="() => CartSvc.Increase(item)">➕</button>
+                            </div>
+
+                            <p class="price">
+                                💰 @item.TotalPrice galleons
+                            </p>
+                        </div>
+
+                        <button class="delete-btn"
+                                @onclick="() => CartSvc.Remove(item)">
+                            🗑️
+                        </button>
+                    </div>
+                    }
+                }
+            </div>
+            <div class="checkout">
+                <p class="cart-total">Subtotal: @CartSvc.Subtotal </p>
+                <p class="cart-total">Discount: @CartSvc.DiscountAmount </p>
+                <p class="cart-total">Total: @CartSvc.Total galleons</p>
+
+                <button class="btn checkout-btn"
+                        @onclick="Checkout">
+                    Checkout
+                </button>
+            </div>
+
+        </div>
+   </div>
+    }
+</div>
 
 @code {
-    private Wizard? Wizard;
-    private decimal GrandTotal;
-
     protected override async Task OnInitializedAsync()
     {
-        Wizard = LoginService.CurrentWizard;
+        await CartSvc.LoadCartAsync();
+    }
 
-        if (Wizard != null)
-        {
-            await WizardHelper.LoadCartDataAsync(Wizard, Db);
-            GrandTotal = Wizard.Cart.Sum(i => i.TotalPrice);
-        }
+    void GoBack() => Nav.NavigateTo("/shop");
+
+    async Task Checkout()
+    {
+        await CartSvc.Clear();
+        Nav.NavigateTo("/shop");
     }
 }
-

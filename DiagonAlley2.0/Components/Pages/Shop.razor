@@ -4,8 +4,10 @@
 @using DiagonAlley2._0.Services
 @using DiagonAlley2._0.Services.Helper
 @using global::Models.Enum
+@using global::Services.Helper
 @inject MongoDbService Db
 @inject NavigationManager Nav
+@inject LoginService LoginService
 
 <div class="particles-container">
     <ParticlesShop />
@@ -13,11 +15,17 @@
 <div class="shop-container" >
 
 		<h1 class="magic-title">Diagon Alley Shop</h1>
-
         <div class="shop-btn" >
         <button class="btn" @onclick="HandeleLogout" >Sign out</button>
-        <button class="btn" >Cart</button>
-
+       
+        @if(LoginService.IsAdmin == true)
+        {
+            <button class="btn">Add product</button>
+        } 
+        else
+        {
+        <button class="btn" @onclick="HandeleGoToCart" >Cart</button> 
+        }
         </div> 
 
     <div class="shop-content">
@@ -34,7 +42,6 @@
                         <img src="@ProductImageHelper.GetImage(product.Type)"
                              alt="@product.Name"
                              class="product-image" />
-
                         <h3>@product.Name</h3>
 
                         <p class="price">
@@ -56,31 +63,45 @@
                             <p>🧹 Speed: @product.Speed</p>
                             <p>🏭 Maker: @product.Manufacturer</p>
                         }
-
-                        <button class="btn">
+                        <div class="product-btn">
+                        @if(LoginService.IsAdmin == true)
+                        {
+                            <button class="admin-btn">🗑️</button>
+                            <button class="admin-btn">✏️</button>
+                        }
+                        else
+                        {
+                        <button class="btn" @onclick="() => HandleAddToCart(product)">
                             Add to cart
-                        </button>
-
+                        </button>                         
+                        }
+                        </div>
                     </div>
                 }
             </div>
         }
     </div>
 
-
 </div>
 
 
 @code {
-
-
     private List<Product> Products = new();
 
     protected override async Task OnInitializedAsync()
     {
         Products = await Db.GetAllAsync<Product>("Products");
+     
     }
+    private async Task HandleAddToCart(Product product)
+{
+    var wizard = LoginService.CurrentWizard;
 
+    await WizardHelper.AddToCart(wizard, product, Db);
+
+    Console.WriteLine($"{product.Name} added to cart");
+}
 
     void HandeleLogout() =>  Nav.NavigateTo("/");
+    void HandeleGoToCart() =>  Nav.NavigateTo("/cart");
 }

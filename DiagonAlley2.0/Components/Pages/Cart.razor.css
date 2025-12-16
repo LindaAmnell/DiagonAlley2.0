@@ -1,0 +1,123 @@
+﻿.cart-container {
+    padding: 40px 40px;
+    display: grid;
+    place-items: center;
+    z-index: 5;
+    position: relative;
+}
+
+.cart-message {
+    color: gold;
+    font-size: 1.2rem;
+    margin-top: 30px;
+}
+
+.cart-list {
+    display: block;
+    max-width: 900px;
+    width: 100%;
+}
+
+.flex {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    align-items: start;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    padding: 10px;
+    font-family: 'IM Fell English SC', serif;
+    justify-content: space-between;
+}
+.shop-btn{
+    margin-bottom: 20px;
+}
+
+.cart-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
+    padding: 6px;
+    filter: drop-shadow(0 0 10px rgba(212,175,55,0.6));
+}
+.cart-info{
+    width: 200px;
+}
+
+.cart-info h3 {
+    color: #d4af37;
+    margin-bottom: 6px;
+    font-family: 'IM Fell English SC', serif;
+}
+
+.cart-info p {
+    color: gold;
+    margin: 2px 0;
+}
+
+.cart-info .price {
+    font-weight: bold;
+}
+
+.cart-total {
+    color: #d4af37;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.checkout {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 0 12px rgba(212,175,55,0.25);
+    font-family: 'IM Fell English SC', serif;
+    place-self: center;
+}
+
+.checkout-btn {
+    margin-top: 15px;
+    width: 100%;
+}
+.cart-button {
+    background: #d4af37;
+    border: none;
+    color: black;
+    font-size: 1.1rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+}
+
+    .cart-button:hover {
+        background: #f5d87f;
+        transform: scale(1.08);
+    }
+
+.quantity-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.quantity-label {
+    color: gold;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #d4af37;
+    font-size: 1.2rem;
+    padding: 4px 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .delete-btn:hover {
+        background: rgba(212,175,55,0.2);
+        color: #fff;
+    }

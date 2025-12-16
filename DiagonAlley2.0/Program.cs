@@ -1,5 +1,6 @@
 using DiagonAlley2._0.Components;
 using DiagonAlley2._0.Services;
+using Services;
 
 namespace DiagonAlley2._0
 {
@@ -11,6 +12,8 @@ namespace DiagonAlley2._0
 
             builder.Services.AddSingleton<MongoDbService>();
             builder.Services.AddScoped<LoginService>();
+            builder.Services.AddScoped<CartService>();
+
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
