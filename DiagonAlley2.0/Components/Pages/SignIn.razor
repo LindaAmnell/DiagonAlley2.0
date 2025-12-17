@@ -3,13 +3,12 @@
 @using DiagonAlley2._0.Services
 @using DiagonAlley2._0.Models
 @inject NavigationManager Nav
-@inject MongoDbService Db
 @inject LoginService LoginService
 
 
 <div class="particles-container">
    <ParticlesAuth />
-</div
+</div>
 
 <div class="signIn">
 	
@@ -48,26 +47,23 @@
     private string? Message;
 
 
-	private async Task HandeleLogin()
+private async Task HandeleLogin()
 {
     Message = UserValidationHelper.ValidateCredentials(UserName, Password);
     if (Message != null)
         return;
 
-    var wizards = await Db.GetAllAsync<Wizard>("Wizards");
+    var success = await LoginService.LoginAsync(UserName, Password);
 
-    var wizard = wizards.FirstOrDefault(w =>
-        w.Name == UserName && w.Password == Password);
-
-    if (wizard == null)
+    if (!success)
     {
         Message = "Invalid username or password.";
         return;
     }
 
-    LoginService.Login(wizard);
     Nav.NavigateTo("/shop");
 }
+
 	void HandeleBack() =>  Nav.NavigateTo("/");
 	
 

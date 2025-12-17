@@ -13,6 +13,8 @@ namespace DiagonAlley2._0
             builder.Services.AddSingleton<MongoDbService>();
             builder.Services.AddScoped<LoginService>();
             builder.Services.AddScoped<CartService>();
+            builder.Services.AddScoped<ProductService>();
+            builder.Services.AddScoped<StorageService>();
 
 
             // Add services to the container.

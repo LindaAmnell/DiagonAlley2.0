@@ -1,33 +1,47 @@
 ﻿@page "/shop"
+
 @using DiagonAlley2._0.Components.Pages.Particles
 @using DiagonAlley2._0.Components.Shop
 @using DiagonAlley2._0.Models
 @using DiagonAlley2._0.Services
-@using DiagonAlley2._0.Services.Helper
-@using global::Models.Enum
-@using global::Services.Helper
-@inject MongoDbService Db
+@using global::Services
+
 @inject NavigationManager Nav
 @inject LoginService LoginService
+@inject ProductService ProductService
+@inject CartService CartService
 
 <div class="particles-container">
     <ParticlesShop />
 </div>
-<div class="shop-container" >
 
-		<h1 class="magic-title">Diagon Alley Shop</h1>
-        <div class="shop-btn" >
-        <button class="btn" @onclick="HandeleLogout" >Sign out</button>
-       
-        @if(LoginService.IsAdmin == true)
+    @if (ShowForm)
+    {
+        <div class="creat-div">
+            <ProductForm
+                Model="SelectedProduct"
+                IsEdit="IsEditing"
+                OnSaved="OnProductSaved"
+                OnCancel="CloseForm" />
+        </div>
+    }
+
+<div class="shop-container">
+
+    <h1 class="magic-title">Diagon Alley Shop</h1>
+
+    <div class="shop-btn">
+        <button class="btn" @onclick="HandleLogout">Sign out</button>
+
+        @if (LoginService.IsAdmin)
         {
-            <button class="btn" @onclick="handleCreate" >Add product</button>
-        } 
+            <button class="btn" @onclick="HandleCreate">Add product</button>
+        }
         else
         {
-        <button class="btn" @onclick="HandeleGoToCart" >Cart</button> 
+            <button class="btn" @onclick="HandleGoToCart">Cart</button>
         }
-        </div> 
+    </div>
 
     <div class="shop-content">
         @if (Products.Count == 0)
@@ -36,65 +50,72 @@
         }
         else
         {
-           <div class="product-grid">
-            @foreach (var product in Products)
-            {
-                <ProductCard
-                    Product="product"
-                    IsAdmin="LoginService.IsAdmin"
-                    OnAddToCart="HandleAddToCart" />
-            }
-        </div>
+            <div class="product-grid">
+                @foreach (var product in Products)
+                {
+                    <ProductCard
+                        Product="product"
+                        IsAdmin="LoginService.IsAdmin"
+                        OnAddToCart="HandleAddToCart"
+                        OnEdit="HandleEdit"
+                        OnDeleted="HandleDeleted" />
+                }
+            </div>
         }
     </div>
-    @if (CreatProduct)
-    {   
-        <div class="creat-div">
-             
-                    <ProductForm 
-                         OnClose="CloseCreate" 
-                         OnProductCreated="ReloadProducts"
-                        />
-        </div>
-    }
-</div>
 
+</div>
 
 @code {
     private List<Product> Products = new();
-    private bool CreatProduct = false;
+
+    private bool ShowForm;
+    private bool IsEditing;
+    private Product? SelectedProduct;
 
     protected override async Task OnInitializedAsync()
     {
-        Products = await Db.GetAllAsync<Product>("Products");
-
+        Products = await ProductService.GetAllAsync();
     }
+
     private async Task HandleAddToCart(Product product)
     {
-        var wizard = LoginService.CurrentWizard;
-
-        await WizardHelper.AddToCart(wizard, product, Db);
-
-        Console.WriteLine($"{product.Name} added to cart");
+        await CartService.AddToCart(product);
     }
 
-    void HandeleLogout() =>  Nav.NavigateTo("/");
-    void HandeleGoToCart() =>  Nav.NavigateTo("/cart");
-
-    void handleCreate()
+    void HandleCreate()
     {
-        CreatProduct = true;
+        IsEditing = false;
+        SelectedProduct = null;
+        ShowForm = true;
     }
-    void CloseCreate()
-{
-    CreatProduct = false;
-}
 
-async Task ReloadProducts()
-{
-    Products = await Db.GetAllAsync<Product>("Products");
-    StateHasChanged();
-}
+    void HandleEdit(Product product)
+    {
+        SelectedProduct = product;
+        IsEditing = true;
+        ShowForm = true;
+    }
 
+    async Task HandleDeleted(Product product)
+    {
+        Products.Remove(product);
+        await Task.CompletedTask;
+    }
 
+    async Task OnProductSaved()
+    {
+        Products = await ProductService.GetAllAsync();
+        CloseForm();
+    }
+
+    void CloseForm()
+    {
+        ShowForm = false;
+        IsEditing = false;
+        SelectedProduct = null;
+    }
+
+    void HandleLogout() => Nav.NavigateTo("/");
+    void HandleGoToCart() => Nav.NavigateTo("/cart");
 }

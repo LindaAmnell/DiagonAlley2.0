@@ -1,6 +1,9 @@
 ﻿@using DiagonAlley2._0.Models
+@using DiagonAlley2._0.Services
 @using global::Models.Enum
 @using DiagonAlley2._0.Services.Helper
+
+@inject ProductService ProductService
 
 <div class="product-card">
 
@@ -10,9 +13,7 @@
 
     <h3>@Product.Name</h3>
 
-    <p class="price">
-        💰 @Product.Price galleons
-    </p>
+    <p class="price">💰 @Product.Price galleons</p>
 
     @if (Product.Type == ProductType.Wand)
     {
@@ -30,11 +31,16 @@
         <p>🏭 Maker: @Product.Manufacturer</p>
     }
 
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p class="error">@ErrorMessage</p>
+    }
+
     <div class="product-btn">
         @if (IsAdmin)
         {
-            <button class="admin-btn">🗑️</button>
-            <button class="admin-btn">✏️</button>
+            <button class="admin-btn" @onclick="HandleDelete">🗑️</button>
+            <button class="admin-btn" @onclick="HandleEdit">✏️</button>
         }
         else
         {
@@ -50,16 +56,30 @@
     [Parameter, EditorRequired]
     public Product Product { get; set; } = default!;
 
-    [Parameter]
-    public bool IsAdmin { get; set; }
+    [Parameter] public bool IsAdmin { get; set; }
+    [Parameter] public EventCallback<Product> OnAddToCart { get; set; }
+    [Parameter] public EventCallback<Product> OnEdit { get; set; }
+    [Parameter] public EventCallback<Product> OnDeleted { get; set; }
 
-    [Parameter]
-    public EventCallback<Product> OnAddToCart { get; set; }
+    private string? ErrorMessage;
 
     async Task AddToCart()
-    {
-        await OnAddToCart.InvokeAsync(Product);
-    }
+        => await OnAddToCart.InvokeAsync(Product);
 
-    
+    async Task HandleEdit()
+        => await OnEdit.InvokeAsync(Product);
+
+    async Task HandleDelete()
+    {
+        try
+        {
+            ErrorMessage = null;
+            await ProductService.DeleteAsync(Product.Id!);
+            await OnDeleted.InvokeAsync(Product);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
 }

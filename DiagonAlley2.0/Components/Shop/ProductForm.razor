@@ -1,103 +1,147 @@
 ﻿@using DiagonAlley2._0.Services
 @using global::Models.Enum
 @using DiagonAlley2._0.Models
-@inject MongoDbService Db
+@inject ProductService ProductService
 
 <div class="admin-form">
 
-    <h2 class="magic-subtitle">Add Product</h2>
+    <h2 class="magic-subtitle">
+        @(IsEdit ? "Edit Product" : "Add Product")
+    </h2>
 
     <div class="form-group">
         <label class="labels">Name</label>
-        <input type="text"
-               class="input"
-               value="@Name"
-               @oninput="e => Name = e.Value?.ToString()" />
+        <input class="input" @bind="Name" />
     </div>
 
     <div class="form-group">
         <label class="labels">Price</label>
-        <input type="text"
-               class="input"
-               value="@Price"
-               @oninput="e => Price = decimal.TryParse(e.Value?.ToString(), out var p) ? p : Price" />
+        <input class="input"
+               type="number"
+               step="0.01"
+               @bind="Price" />
     </div>
 
     <div class="form-group">
         <label class="labels">Product Type</label>
         <select class="input"
-                value="@Type"
-                @onchange="e => Type = Enum.Parse<ProductType>(e.Value!.ToString()!)">
+                @bind="Type"
+                disabled="@IsEdit">
             @foreach (var productType in Enum.GetValues<ProductType>())
             {
                 <option value="@productType">@productType</option>
             }
         </select>
     </div>
+
     <div class="divider"></div>
 
-         <ProductTypeFields
-            Type="Type"
+    <ProductTypeFields
+        Type="Type"
 
-            Core="Core"
-            Length="Length"
-            OnCoreChanged="v => Core = v"
-            OnLengthChanged="v => Length = v"
+        Core="Core"
+        Length="Length"
+        OnCoreChanged="v => Core = v"
+        OnLengthChanged="v => Length = v"
 
-            Effect="Effect"
-            Duration="Duration"
-            OnEffectChanged="v => Effect = v"
-            OnDurationChanged="v => Duration = v"
+        Effect="Effect"
+        Duration="Duration"
+        OnEffectChanged="v => Effect = v"
+        OnDurationChanged="v => Duration = v"
 
-            Speed="Speed"
-            Manufacturer="Manufacturer"
-            OnSpeedChanged="v => Speed = v"
-            OnManufacturerChanged="v => Manufacturer = v" />
+        Speed="Speed"
+        Manufacturer="Manufacturer"
+        OnSpeedChanged="v => Speed = v"
+        OnManufacturerChanged="v => Manufacturer = v" />
 
-    <button class="btn admin-submit" @onclick="SaveProduct">Save Product</button>
-    <button class="btn" @onclick="Close"  >Close</button>
+        <div class="btn-div">
+
+    <button class="btn admin-submit" @onclick="Save">
+        @(IsEdit ? "Product" : "Save Product")
+    </button>
+    <button class="btn" @onclick="Cancel">Cancel</button>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p class="error">@ErrorMessage</p>
+    }
+
+
+        </div>
 
 </div>
 
 @code {
+    [Parameter] public Product? Model { get; set; }
+    [Parameter] public bool IsEdit { get; set; }
+
+    [Parameter] public EventCallback OnSaved { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
     private string Name { get; set; } = "";
     private decimal Price { get; set; }
     private ProductType Type { get; set; }
 
-    // Wand
-    private string Core { get; set; }
-    private int Length { get; set; }
+    private string? Core;
+    private int Length;
 
-    // Potion
-    private string Effect { get; set; }
-    private int Duration { get; set; }
+    private string? Effect;
+    private int Duration;
 
-    // Broomstick
-    private int Speed { get; set; }
-    private string Manufacturer { get; set; }
+    private int Speed;
+    private string? Manufacturer;
 
+    private string? ErrorMessage;
 
-    [Parameter]
-    public EventCallback OnClose { get; set; }
-    [Parameter] public EventCallback OnProductCreated { get; set; }
-
-
-    async Task Close()
+    protected override void OnParametersSet()
     {
-        await OnClose.InvokeAsync();
+        if (!IsEdit || Model is null)
+            return;
+
+        Name = Model.Name;
+        Price = Model.Price;
+        Type = Model.Type;
+
+        Core = Model.Core;
+        Length = Model.Length ?? 0;
+
+        Effect = Model.Effect;
+        Duration = Model.Duration ?? 0;
+
+        Speed = Model.Speed ?? 0;
+        Manufacturer = Model.Manufacturer;
     }
 
-    async Task SaveProduct()
+    async Task Save()
     {
-        var product = BuildProduct();
+        try
+        {
+            ErrorMessage = null;
 
-      await Db.CreateAsync("Products", product);    
+            var product = BuildProduct();
 
-        await OnProductCreated.InvokeAsync();
-        await OnClose.InvokeAsync();
+            if (IsEdit)
+            {
+                product.Id = Model!.Id;
+                await ProductService.UpdateAsync(product);
+            }
+            else
+            {
+                await ProductService.CreateAsync(product);
+            }
+
+            await OnSaved.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
     }
 
-     private Product BuildProduct()
+    async Task Cancel()
+        => await OnCancel.InvokeAsync();
+
+    private Product BuildProduct()
     {
         return new Product
         {
@@ -105,15 +149,12 @@
             Price = Price,
             Type = Type,
 
-            // Wand
             Core = Type == ProductType.Wand ? Core : null,
             Length = Type == ProductType.Wand ? Length : null,
 
-            // Potion
             Effect = Type == ProductType.Potion ? Effect : null,
             Duration = Type == ProductType.Potion ? Duration : null,
 
-            // Broomstick
             Speed = Type == ProductType.Broomstick ? Speed : null,
             Manufacturer = Type == ProductType.Broomstick ? Manufacturer : null
         };

@@ -1,16 +1,29 @@
-﻿@inherits LayoutComponentBase
+﻿@using DiagonAlley2._0.Services
+@inherits LayoutComponentBase
+@inject LoginService LoginService
+
+@code {
+    private bool _restored;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_restored)
+        {
+            _restored = true;
+            await LoginService.TryRestoreLoginAsync();
+            StateHasChanged();
+        }
+    }
+}
 
 <div class="main-layout">
-    <header>
-       
-    </header>
+    <header></header>
 
     <main class="content">
         @Body
     </main>
 
-    <footer>
-     
-    </footer>
+    <footer></footer>
 </div>
+
 

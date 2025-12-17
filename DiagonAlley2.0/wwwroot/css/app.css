@@ -4,6 +4,10 @@
 }
 body {
     background: black;
+    position: relative;
+}
+html, body {
+    height: 100%;
 }
 
 .magic-title {
@@ -54,9 +58,6 @@ body {
     flex-direction: column;
 }
 
-.labels {
-    font-size: 20px;
-}
 .input {
     border-radius: 6px;
     border: none;
@@ -69,9 +70,6 @@ body {
     box-shadow: 0 0 10px rgba(212,175,55,0.4);
     z-index: 5;
     position: relative;
-}
-select{
-    
 }
 
 .btn {

@@ -74,6 +74,31 @@ namespace Services
                 await _db.UpdateAsync("Wizards", Wizard.Id!, Wizard);
             }
         }
+
+        public async Task AddToCart(Product product)
+        {
+            if (Wizard == null)
+                throw new InvalidOperationException("No logged in wizard");
+
+            var item = Wizard.Cart.FirstOrDefault(
+                c => c.ProductId == product.Id);
+
+            if (item == null)
+            {
+                Wizard.Cart.Add(new CartItem
+                {
+                    ProductId = product.Id!,
+                    Quantity = 1
+                });
+            }
+            else
+            {
+                item.Quantity++;
+            }
+
+            await Save();
+        }
+
     }
 }
 

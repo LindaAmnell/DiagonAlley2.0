@@ -3,7 +3,9 @@
 @using DiagonAlley2._0.Models
 @using DiagonAlley2._0.Models.Enum
 @using DiagonAlley2._0.Services
-@using global::Services.Helper
+@inject NavigationManager Nav
+@inject LoginService LoginService
+
 
 <div class="particles-container">
      <ParticlesAuth />
@@ -49,8 +51,6 @@
     </div>
 
 @code {
-    @inject NavigationManager Nav
-    @inject MongoDbService Db
 
     private string UserName { get; set; } = "";
     private string Password { get; set; } = "";
@@ -58,40 +58,27 @@
 
     private string? Message { get; set; }
 
-    private async Task HandeleRegister()
+   private async Task HandeleRegister()
+{
+    Message = UserValidationHelper.ValidateCredentials(UserName, Password);
+    if (Message != null)
+        return;
+
+    var error = await LoginService.RegisterAsync(
+        UserName,
+        Password,
+        SelectedLevel);
+
+    if (error != null)
     {
-     var validationMessage = UserValidationHelper.ValidateCredentials(UserName, Password);
-
-        if (validationMessage is not null)
-        {
-            Message = validationMessage;
-            return;
-        }
-
-        var existing = await Db.GetAllAsync<Wizard>("Wizards");
-        if (existing.Any(w => w.Name == UserName))
-        {
-            Message = "A wizard with this username already exists.";
-            return;
-        }
-
-        var wizard = new Wizard
-        {
-            Name = UserName,
-            Password = Password,
-            Level = SelectedLevel,
-            Cart = new()
-        };
-
-        WizardHelper.ApplyDiscount(wizard);
-
-        await Db.CreateAsync("Wizards", wizard);
-
-        Message = "Wizard created! Redirecting...";
-        await Task.Delay(1000);
-
-        Nav.NavigateTo("/signIn");
+        Message = error;
+        return;
     }
+
+    Message = "Wizard created! Redirecting...";
+    await Task.Delay(1000);
+    Nav.NavigateTo("/signIn");
+}
 
     private void HandeleBack() => Nav.NavigateTo("/");
 }
