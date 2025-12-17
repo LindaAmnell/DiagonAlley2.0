@@ -1,0 +1,33 @@
+﻿@if (Visible)
+{
+    <div class="creat-div">
+        <div class="admin-form">
+            <h3>@Title</h3>
+            <p>@Message</p>
+
+            <div class="btn-div">
+                <button class="btn" @onclick="Confirm">Yes</button>
+                <button class="btn" @onclick="Cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Message { get; set; } = "";
+    [Parameter] public EventCallback OnConfirmed { get; set; }
+
+    public bool Visible { get; set; }
+
+    public void Show() => Visible = true;
+
+    async Task Confirm()
+    {
+        Visible = false;
+        await OnConfirmed.InvokeAsync();
+    }
+
+    void Cancel() => Visible = false;
+}

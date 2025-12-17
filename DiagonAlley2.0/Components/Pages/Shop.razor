@@ -25,6 +25,7 @@
                 OnCancel="CloseForm" />
         </div>
     }
+    <Toast @ref="ToastRef" />
 
 <div class="shop-container">
 
@@ -68,7 +69,7 @@
 
 @code {
     private List<Product> Products = new();
-
+    private Toast? ToastRef;
     private bool ShowForm;
     private bool IsEditing;
     private Product? SelectedProduct;
@@ -81,6 +82,7 @@
     private async Task HandleAddToCart(Product product)
     {
         await CartService.AddToCart(product);
+        await ToastRef!.Show($"Added 1 {product.Name} to cart");
     }
 
     void HandleCreate()

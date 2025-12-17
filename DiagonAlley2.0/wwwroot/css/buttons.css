@@ -1,0 +1,41 @@
+﻿
+.btn {
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    width: 170px;
+    border: none;
+    cursor: pointer;
+    background: #d4af37;
+    font-weight: bold;
+    color: black;
+    letter-spacing: 1px;
+    box-shadow: 0 0 12px rgba(212,175,55,0.8), inset 0 0 10px rgba(0,0,0,0.4);
+    transition: all 0.25s ease-in-out;
+    margin: 10px 0;
+    font-family: 'IM Fell English SC', serif;
+}
+
+    .btn:hover {
+        background: #f5d87f;
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255,215,0,1), inset 0 0 10px rgba(0,0,0,0.5);
+    }
+
+.admin-btn {
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: #d4af37;
+    color: black;
+    box-shadow: 0 0 12px rgba(212,175,55,0.8), inset 0 0 10px rgba(0,0,0,0.4);
+    transition: all 0.25s ease-in-out;
+}
+
+    .admin-btn:hover {
+        background: #f5d87f;
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255,215,0,1), inset 0 0 10px rgba(0,0,0,0.5);
+    }

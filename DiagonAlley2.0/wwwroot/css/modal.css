@@ -1,0 +1,49 @@
+﻿.creat-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 10000;
+}
+
+.toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #222;
+    color: gold;
+    padding: 16px 26px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(212,175,55,0.7);
+    z-index: 20000;
+    font-size: 1.1rem;
+    text-align: center;
+    animation: toastFade 2.5s ease forwards;
+}
+
+@keyframes toastFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+}

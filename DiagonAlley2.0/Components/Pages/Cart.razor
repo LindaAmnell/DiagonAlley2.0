@@ -1,6 +1,7 @@
 ﻿@page "/cart"
 
 @using DiagonAlley2._0.Components.Pages.Particles
+@using DiagonAlley2._0.Components.Shop
 @using DiagonAlley2._0.Services.Helper
 @using global::Services
 
@@ -10,6 +11,7 @@
 <div class="particles-container">
     <ParticlesHome />
 </div>
+<Toast @ref="ToastRef" />
 
 <div class="cart-container">
     <h1 class="magic-title">Your Cart</h1>
@@ -56,6 +58,7 @@
                                 💰 @item.TotalPrice galleons
                             </p>
                         </div>
+                     
 
                         <button class="delete-btn"
                                 @onclick="() => CartSvc.Remove(item)">
@@ -82,6 +85,7 @@
 </div>
 
 @code {
+    private Toast? ToastRef;
     protected override async Task OnInitializedAsync()
     {
         await CartSvc.LoadCartAsync();
@@ -91,7 +95,9 @@
 
     async Task Checkout()
     {
+        
         await CartSvc.Clear();
+        await ToastRef!.Show("Order placed! Your items will arrive by owl 🦉");
         Nav.NavigateTo("/shop");
     }
 }

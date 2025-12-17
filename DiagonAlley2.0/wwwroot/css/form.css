@@ -1,0 +1,65 @@
+﻿.labels {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: #f5d87f;
+}
+
+.input {
+    background: #111;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 8px;
+    padding: 10px 12px;
+    width: 250px;
+    color: gold;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 0 10px rgba(212,175,55,0.4);
+}
+
+    .input:focus {
+        border-color: #d4af37;
+        box-shadow: 0 0 8px rgba(212,175,55,0.5);
+    }
+
+select.input {
+    background-color: #111;
+    color: gold;
+}
+
+    select.input option {
+        background-color: #111;
+        color: gold;
+    }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.divider {
+    height: 1px;
+    background: rgba(212,175,55,0.3);
+    margin: 25px 0;
+}
+
+.admin-form {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 40px;
+    width: 500px;
+    box-shadow: 0 0 20px rgba(212,175,55,0.35);
+    color: gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-submit {
+    margin: 10px;
+    font-size: 1.1rem;
+}
+.btn-div{
+    gap: 20px;
+    margin-top: 20px;
+}
