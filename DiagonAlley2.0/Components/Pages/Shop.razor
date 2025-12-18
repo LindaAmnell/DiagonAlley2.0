@@ -31,7 +31,10 @@
 
     <h1 class="magic-title">Diagon Alley Shop</h1>
 
+
     <div class="shop-btn">
+        <div class="btn-container">
+
         <button class="btn" @onclick="HandleLogout">Sign out</button>
 
         @if (LoginService.IsAdmin)
@@ -41,7 +44,23 @@
         else
         {
             <button class="btn" @onclick="HandleGoToCart">Cart</button>
+
         }
+        </div>
+          @if (LoginService.IsLoggedIn)
+                {
+                    <div class="user-info">
+                        <p class="user">
+                           User:   @LoginService.CurrentWizard!.Name 🪄
+                        </p>
+                @if(!LoginService.IsAdmin)
+                {
+                <p class="user">
+                                🛒 @CartService.ItemCount items ·  @CartService.TotalPrice G
+                            </p>
+                }
+                    </div>
+                }
     </div>
 
     <div class="shop-content">
@@ -74,15 +93,23 @@
     private bool IsEditing;
     private Product? SelectedProduct;
 
+
     protected override async Task OnInitializedAsync()
     {
         Products = await ProductService.GetAllAsync();
+        if (LoginService.IsLoggedIn)
+    {
+        await CartService.LoadCartAsync();
+        StateHasChanged();
+    }
+
     }
 
     private async Task HandleAddToCart(Product product)
     {
         await CartService.AddToCart(product);
         await ToastRef!.Show($"Added 1 {product.Name} to cart");
+        StateHasChanged();
     }
 
     void HandleCreate()

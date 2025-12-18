@@ -15,7 +15,11 @@ namespace Services
         }
 
         public Wizard? Wizard => _login.CurrentWizard;
+        public int ItemCount =>
+        Wizard?.Cart.Sum(item => item.Quantity) ?? 0;
 
+        public decimal TotalPrice =>
+            Total;
         public async Task LoadCartAsync()
         {
             if (Wizard == null) return;
@@ -88,6 +92,7 @@ namespace Services
                 Wizard.Cart.Add(new CartItem
                 {
                     ProductId = product.Id!,
+                    Product = product,
                     Quantity = 1
                 });
             }
@@ -95,7 +100,7 @@ namespace Services
             {
                 item.Quantity++;
             }
-
+            Wizard.UpdateDiscount();
             await Save();
         }
 

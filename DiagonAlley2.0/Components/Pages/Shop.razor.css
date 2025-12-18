@@ -6,9 +6,8 @@
     padding-top: 50px;
     display: grid;
     min-height: 100vh;
-    place-items: center;
-    padding-bottom: 30px 
-
+    justify-items: center;
+    padding-bottom: 30px
 }
 
 .shop-content {
@@ -19,7 +18,29 @@
 }
 
 .shop-btn {
+    position: relative;
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    width: 55%;
+}
+.btn-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
     gap: 30px;
+}
+
+.cart-summary {
+    margin-left: 12px;
+}
+
+.user {
+    color: gold;
+    font-size: 20px;
+}
+
+.user-info {
+    margin-left: auto;
+   
 }
