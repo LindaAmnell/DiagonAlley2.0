@@ -1,6 +1,8 @@
 
 # 🧙‍♂️ Diagon Alley – Blazor Store Application (MongoDB)
-![DiagonAlley](https://github.com/user-attachments/assets/7f7273c3-6d53-4630-afc5-39304484c04d)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7f7273c3-6d53-4630-afc5-39304484c04d" width="500">
+</p>
 
 
 ## 📖 About the Project
