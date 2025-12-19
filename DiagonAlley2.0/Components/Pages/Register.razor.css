@@ -1,1 +1,5 @@
-﻿
+﻿@media (max-width: 500px) {
+    .signIn h1 {
+        font-size: 50px;
+    }
+}

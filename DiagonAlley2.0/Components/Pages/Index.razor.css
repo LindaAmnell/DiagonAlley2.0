@@ -45,3 +45,21 @@
             transform: scale(0.95);
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.6), inset 0 0 15px rgba(0,0,0,0.6);
         }
+
+
+
+
+@media (max-width: 900px) {
+    .welcome .magic-title {
+        
+        font-size: 45px;
+    }
+}
+@media (max-width: 600px) {
+    .welcome .magic-title {
+        font-size: 23px;
+    }
+    .btns{
+        flex-direction: column;
+    }
+}

@@ -63,3 +63,21 @@ select.input {
     gap: 20px;
     margin-top: 20px;
 }
+
+
+
+
+
+
+
+@media (max-width: 650px) {
+    .admin-form {
+        padding: 20px;
+        width: 300px;
+    }
+
+    .btn-div {
+       display: flex;
+       flex-direction: column;
+    }
+}
