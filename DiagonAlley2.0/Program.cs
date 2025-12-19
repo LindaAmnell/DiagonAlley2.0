@@ -1,4 +1,6 @@
+using Data;
 using DiagonAlley2._0.Components;
+using DiagonAlley2._0.Data;
 using DiagonAlley2._0.Services;
 using Services;
 
@@ -6,7 +8,8 @@ namespace DiagonAlley2._0
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
+
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,14 @@ namespace DiagonAlley2._0
                 .AddInteractiveServerComponents();
 
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                using var scope = app.Services.CreateScope();
+                var mongo = scope.ServiceProvider.GetRequiredService<MongoDbService>();
+                await ProductSeeder.SeedAsync(mongo);
+                await WizardSeeder.SeedAsync(mongo);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
