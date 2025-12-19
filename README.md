@@ -1,6 +1,7 @@
 
 # 🧙‍♂️ Diagon Alley – Blazor Store Application (MongoDB)
-![Diagon Alley Landing Page](wwwroot/images/DiagonAlley.jpg)
+![DiagonAlley](https://github.com/user-attachments/assets/7f7273c3-6d53-4630-afc5-39304484c04d)
+
 
 ## 📖 About the Project
 This project was developed as part of **Lab 3 – Application with MongoDB (Code First)**.
